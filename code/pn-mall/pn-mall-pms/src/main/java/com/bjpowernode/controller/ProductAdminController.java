@@ -24,10 +24,10 @@ public class ProductAdminController {
      * @param productId
      * @return
      */
-    @GetMapping("/{id}")
-    public Result<Product> getProductById(@PathVariable("id") Long productId) {
+    @GetMapping("/{productId}")
+    public Result<Product> getProductById(@PathVariable Long productId) {
 
-        Product product = productService.getById(productId);
+        Product product = productService.getProductById(productId);
         return Result.success("获取商品信息成功",product);
     }
 }

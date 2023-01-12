@@ -17,4 +17,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
+    @Override
+    public Product getProductById(Long productId) {
+
+        return super.getById(productId);
+    }
 }

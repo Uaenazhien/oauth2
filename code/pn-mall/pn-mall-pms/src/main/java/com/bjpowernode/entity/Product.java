@@ -1,11 +1,15 @@
 package com.bjpowernode.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +23,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@TableName("pms_product")
+@TableName(value = "pms_product", autoResultMap = true)
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,7 +57,8 @@ public class Product implements Serializable {
     /**
      * 商品详情图片
      */
-    private String imgList;
+    @TableField(typeHandler = JacksonTypeHandler.class)
+    private List<String> imgList;
 
     /**
      * 商品销售价格

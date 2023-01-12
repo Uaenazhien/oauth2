@@ -9,7 +9,9 @@
         <result column="title" property="title" />
         <result column="intro" property="intro" />
         <result column="img" property="img" />
-        <result column="img_list" property="imgList" />
+
+        <result column="img_list" property="imgList"
+        typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
         <result column="price" property="price" />
         <result column="original_price" property="originalPrice" />
         <result column="detail" property="detail" />

@@ -13,4 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ProductService extends IService<Product> {
 
+    /**
+     *根据商品id获取商品详情
+     * @param productId
+     * @return
+     */
+    Product getProductById(Long productId);
 }
