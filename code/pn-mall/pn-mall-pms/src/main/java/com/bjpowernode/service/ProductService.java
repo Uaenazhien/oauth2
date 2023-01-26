@@ -1,5 +1,7 @@
 package com.bjpowernode.service;
 
+import com.bjpowernode.dto.PageResult;
+import com.bjpowernode.dto.ProductQueryParam;
 import com.bjpowernode.entity.Product;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,4 +21,11 @@ public interface ProductService extends IService<Product> {
      * @return
      */
     Product getProductById(Long productId);
+    /**
+     * 商品分页查询
+     *
+     * @param queryParam 查询参数
+     * @return
+     */
+    PageResult<Product> pageQuery(ProductQueryParam queryParam);
 }

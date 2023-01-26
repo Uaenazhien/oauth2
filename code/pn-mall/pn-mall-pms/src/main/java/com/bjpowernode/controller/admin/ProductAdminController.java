@@ -1,9 +1,12 @@
-package com.bjpowernode.controller;
+package com.bjpowernode.controller.admin;
 
+import com.bjpowernode.dto.PageResult;
+import com.bjpowernode.dto.ProductQueryParam;
 import com.bjpowernode.dto.Result;
 import com.bjpowernode.entity.Product;
 import com.bjpowernode.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductAdminController {
     @Autowired
     private ProductService productService;
+
+    /**
+     * 分页查询商品数据
+     * @param queryParam
+     * @return
+     */
+    @GetMapping
+    public Result<PageResult<Product>> list(@Validated ProductQueryParam queryParam){
+        return Result.success("请求成功", productService.pageQuery(queryParam));
+
+    }
 
     /**
      *根据商品id查询商品信息

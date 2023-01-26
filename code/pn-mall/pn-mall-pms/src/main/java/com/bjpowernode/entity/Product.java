@@ -10,8 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
+import com.bjpowernode.validation.UpdateGroup;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -32,16 +37,21 @@ public class Product implements Serializable {
      * 商品ID
      */
     @TableId(value = "id", type = IdType.AUTO)
+    @NotNull(message = "商品ID不能为空",groups = UpdateGroup.class)
     private Long id;
 
     /**
      * 分类ID
+     * @NotBlank 简单对象
      */
+    @NotNull(message = "商品分类ID不能为空")
     private Long categoryId;
 
     /**
      * 商品标题
+     * @NotBlank 字符串用@NotBlank
      */
+    @NotBlank(message = "商品标题不能为空")
     private String title;
 
     /**
@@ -52,27 +62,32 @@ public class Product implements Serializable {
     /**
      * 商品主图
      */
+    @NotBlank(message = "商品主图片不能为空")
     private String img;
 
     /**
      * 商品详情图片
+     * @NotEmpty 集合
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
+    @NotEmpty(message = "商品详情图片不能为空")
     private List<String> imgList;
 
     /**
      * 商品销售价格
      */
+    @NotNull(message = "商品销售价格不能为空")
     private BigDecimal price;
 
     /**
      * 商品原价
      */
-    private BigDecimal originalPrice;
 
+    private BigDecimal originalPrice;
     /**
      * 商品详情
      */
+    @NotBlank(message = "商品详情不能为空")
     private String detail;
 
     /**
@@ -83,6 +98,7 @@ public class Product implements Serializable {
     /**
      * 库存
      */
+    @NotNull(message = "商品库存不能为空")
     private Integer stock;
 
     /**
