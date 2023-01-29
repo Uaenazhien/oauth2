@@ -3,6 +3,7 @@ package com.bjpowernode.service.impl;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.bjpowernode.entity.Category;
 import com.bjpowernode.entity.Product;
@@ -11,6 +12,7 @@ import com.bjpowernode.mapper.CategoryMapper;
 import com.bjpowernode.mapper.ProductMapper;
 import com.bjpowernode.service.CategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bjpowernode.util.MinioUtil;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private MinioUtil minioUtil;
 
     @Override
     public List<Tree<Long>> tree() {
@@ -95,7 +100,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         //2.更新商品分类数据
         boolean result = super.updateById(category);
         if (!result) {
-            throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "商品分类ID不存在");
+            throw new BizException(HttpStatus.BAD_REQUEST.value(), "商品分类ID不存在");
         }
         //TODO 返回的不一定是完整的商品分类数据
         return category;
@@ -131,7 +136,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         if (productMapper.exists(productWrapper)) {
             throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "该分类下已经存在商品，不能删除");
         }
+        Category category = super.getById(categoryId);
+        //3.删除商品分类信息
+        boolean result = super.removeById(categoryId);
 
-        return super.removeById(categoryId);
+        //4.删除商品分类的图片
+        String icon = category.getIcon();
+        if (StrUtil.isNotBlank(icon)){
+            String objectName = icon.substring(icon.lastIndexOf("/"));
+            minioUtil.removeFile(objectName);
+        }
+        return result;
     }
 }

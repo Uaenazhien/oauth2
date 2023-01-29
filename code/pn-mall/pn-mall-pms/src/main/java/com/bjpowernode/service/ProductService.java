@@ -28,4 +28,34 @@ public interface ProductService extends IService<Product> {
      * @return
      */
     PageResult<Product> pageQuery(ProductQueryParam queryParam);
+
+    /**
+     * 新增商品
+     *
+     * @param product
+     * @return
+     */
+    Product saveProduct(Product product);
+    /**
+     * 修改商品
+     *
+     * @param product
+     * @return
+     */
+    Product updateProduct(Product product);
+    /**
+     * 删除商品
+     *
+     * @param productId 商品ID
+     * @return
+     */
+    boolean removeProductById(Long productId);
+    /**
+     * 更新商品状态
+     *
+     * @param productId 商品ID
+     * @param status 商品状态
+     * @return
+     */
+    Product updateProductStatus(Long productId, Integer status);
 }

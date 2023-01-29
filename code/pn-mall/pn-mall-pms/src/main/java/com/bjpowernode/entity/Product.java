@@ -62,7 +62,7 @@ public class Product implements Serializable {
     /**
      * 商品主图
      */
-    @NotBlank(message = "商品主图片不能为空")
+    //@NotBlank(message = "商品主图片不能为空")
     private String img;
 
     /**
@@ -70,7 +70,7 @@ public class Product implements Serializable {
      * @NotEmpty 集合
      */
     @TableField(typeHandler = JacksonTypeHandler.class)
-    @NotEmpty(message = "商品详情图片不能为空")
+    //@NotEmpty(message = "商品详情图片不能为空")
     private List<String> imgList;
 
     /**
@@ -87,7 +87,7 @@ public class Product implements Serializable {
     /**
      * 商品详情
      */
-    @NotBlank(message = "商品详情不能为空")
+    //@NotBlank(message = "商品详情不能为空")
     private String detail;
 
     /**

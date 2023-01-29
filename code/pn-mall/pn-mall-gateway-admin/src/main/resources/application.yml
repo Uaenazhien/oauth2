@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: pn-mall-gateway-admin
+  cloud:
+    nacos:
+      discovery: # 服务注册中心
+        server-addr: 192.168.100.31:8848
+      config:    # 服务配置中心
+        server-addr: 192.168.100.31:8848
+    # 网关路由和负载均衡配置
+    gateway:
+      routes:
+        - id: pn-mall-pms          #自定义的路由ID，保持唯一
+          uri: lb://pn-mall-pms    # 微服务的名称 实现负载均衡
+          predicates:
+            - Path=/pms/admin/**

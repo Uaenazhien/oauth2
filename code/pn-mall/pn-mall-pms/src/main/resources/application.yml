@@ -32,3 +32,8 @@ logging:
     root: info
     # 对某个包指定单独的日志级别
     com.bjpowernode.mapper: debug
+minio:
+  endpoint: http://192.168.100.41:9000
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucket: mall

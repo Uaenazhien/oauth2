@@ -11,6 +11,7 @@
         <module>pn-common</module>
         <module>pn-mall-pms</module>
         <module>pn-generator</module>
+        <module>pn-mall-gateway-admin</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -23,6 +24,7 @@
         <hutool.version>5.8.10</hutool.version>
         <guava.version>31.1-jre</guava.version>
         <fastjson.version>2.0.21</fastjson.version>
+        <minio.version>8.0.3</minio.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +62,14 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+
+            <!-- 分布式存储 minio -->
+            <dependency>
+                <groupId>io.minio</groupId>
+                <artifactId>minio</artifactId>
+                <version>${minio.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -96,6 +106,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!--测试模块-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
