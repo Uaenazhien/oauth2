@@ -12,6 +12,7 @@
         <module>pn-mall-pms</module>
         <module>pn-generator</module>
         <module>pn-mall-gateway-admin</module>
+        <module>pn-mall-cms</module>
     </modules>
     <packaging>pom</packaging>
 

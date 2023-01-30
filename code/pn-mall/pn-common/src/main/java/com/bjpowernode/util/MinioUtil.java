@@ -5,15 +5,21 @@ import cn.hutool.core.util.IdUtil;
 import com.bjpowernode.config.MinioConfig;
 import com.bjpowernode.dto.Result;
 import com.bjpowernode.exception.BizException;
+import com.google.common.collect.Lists;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.RemoveObjectsArgs;
+import io.minio.messages.DeleteError;
+import io.minio.messages.DeleteObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class MinioUtil {
@@ -66,5 +72,4 @@ public class MinioUtil {
             throw new BizException(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage());
         }
     }
-
 }

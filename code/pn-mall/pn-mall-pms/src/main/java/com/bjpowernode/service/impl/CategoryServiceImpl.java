@@ -143,7 +143,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         //4.删除商品分类的图片
         String icon = category.getIcon();
         if (StrUtil.isNotBlank(icon)){
-            String objectName = icon.substring(icon.lastIndexOf("/"));
+            String objectName = icon.substring(icon.lastIndexOf("/") +1);
             minioUtil.removeFile(objectName);
         }
         return result;

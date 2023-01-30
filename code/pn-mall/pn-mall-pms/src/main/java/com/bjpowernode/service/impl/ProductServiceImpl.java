@@ -14,10 +14,14 @@ import com.bjpowernode.mapper.CategoryMapper;
 import com.bjpowernode.mapper.ProductMapper;
 import com.bjpowernode.service.ProductService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bjpowernode.util.MinioUtil;
+import com.google.common.collect.Lists;
 import org.apache.http.conn.routing.HttpRoute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -32,6 +36,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private MinioUtil minioUtil;
 
     @Override
     public Product getProductById(Long productId) {
@@ -99,8 +106,22 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             throw new BizException(HttpStatus.BAD_REQUEST.value(), "已经上架商品不允许删除");
         }
         //2.删除商品相关的信息
-        //3.
-        return super.removeById(productId);
+        boolean result = super.removeById(productId);
+        //3.删除商品相关的图片
+        String img = product.getImg();
+        List<String> imgs = product.getImgList();
+        imgs.add(img);
+
+
+        //循环删除 因上一个工具批量删除没做
+        imgs.forEach(item -> {
+            if (StrUtil.isNotBlank(item)) {
+                minioUtil.removeFile(item.substring(item.lastIndexOf("/") + 1));
+            }
+        });
+        //批量删除文件
+
+        return result;
     }
 
     @Override

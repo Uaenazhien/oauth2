@@ -1,3 +1,4 @@
+/*
 package com.bjpowernode.config;
 
 import org.springframework.context.annotation.Bean;
@@ -23,4 +24,4 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
-}
+}*/
