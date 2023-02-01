@@ -18,7 +18,7 @@ public class MyBatisPlusGenerator {
     // 代码输出位置
     public static final String OUT_PUT_DIR = "D:\\mybatis";
     // 要过滤的表前缀
-    public static final String TABLE_PRE_FIX = "pms_";
+    public static final String TABLE_PRE_FIX = "cms_";
 
     public static void main(String[] args) {
         FastAutoGenerator.create(URL, USERNAME, PASSWORD)

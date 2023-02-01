@@ -1,4 +1,4 @@
-package com.bjpowernode.controller.admin;
+package com.bjpowernode.controller;
 
 import com.bjpowernode.dto.Result;
 import com.bjpowernode.util.MinioUtil;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/pms/admin/oss")
-public class OSSController {
+public class AdminOSSController {
 
     @Autowired
     private MinioUtil minioUtil;

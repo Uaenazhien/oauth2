@@ -148,4 +148,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         }
         return result;
     }
+    @Override
+    public List<Category> listCategoryByLevel(Integer level) {
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Category::getLevel,level);
+        queryWrapper.orderByAsc(Category::getSort);
+        return super.list(queryWrapper);
+    }
 }

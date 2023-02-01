@@ -40,6 +40,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     private MinioUtil minioUtil;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     @Override
     public Product getProductById(Long productId) {
 
@@ -152,5 +155,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         // 更新商品状态
         super.updateById(product);
         return product;
+    }
+
+    @Override
+    public List<Product> listProductByIds(List<Long> productIds) {
+        return productMapper.listProductByIds(productIds);
     }
 }

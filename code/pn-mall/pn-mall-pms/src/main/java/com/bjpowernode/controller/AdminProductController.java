@@ -1,4 +1,4 @@
-package com.bjpowernode.controller.admin;
+package com.bjpowernode.controller;
 
 import com.bjpowernode.dto.PageResult;
 import com.bjpowernode.dto.ProductQueryParam;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/pms/admin/products")
-public class ProductAdminController {
+public class AdminProductController {
     @Autowired
     private ProductService productService;
 

@@ -1,8 +1,8 @@
 server:
-  port: 8888
+  port: 9999
 spring:
   application:
-    name: pn-mall-gateway-admin
+    name: pn-mall-gateway-app
 
   cloud:
     nacos:
@@ -15,11 +15,11 @@ spring:
         - id: pn-mall-pms          # 商品微服务
           uri: lb://pn-mall-pms    # 微服务的名称 实现负载均衡
           predicates:
-            - Path=/pms/admin/**
+            - Path=/pms/app/**
         - id: pn-mall-cms          # 内容微服务
           uri: lb://pn-mall-cms    # 微服务的名称 实现负载均衡
           predicates:
-            - Path=/cms/admin/**
+            - Path=/cms/app/**
 
 
 

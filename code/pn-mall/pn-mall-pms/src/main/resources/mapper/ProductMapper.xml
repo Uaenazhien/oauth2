@@ -1,30 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bjpowernode.mapper.ProductMapper">
-
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.bjpowernode.entity.Product">
-        <id column="id" property="id" />
-        <result column="category_id" property="categoryId" />
-        <result column="title" property="title" />
-        <result column="intro" property="intro" />
-        <result column="img" property="img" />
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="title" property="title"/>
+        <result column="intro" property="intro"/>
+        <result column="img" property="img"/>
 
         <result column="img_list" property="imgList"
-        typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
-        <result column="price" property="price" />
-        <result column="original_price" property="originalPrice" />
-        <result column="detail" property="detail" />
-        <result column="status" property="status" />
-        <result column="stock" property="stock" />
-        <result column="sales" property="sales" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result column="price" property="price"/>
+        <result column="original_price" property="originalPrice"/>
+        <result column="detail" property="detail"/>
+        <result column="status" property="status"/>
+        <result column="stock" property="stock"/>
+        <result column="sales" property="sales"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, category_id, title, intro, img, img_list, price, original_price, detail, status, stock, sales, create_time, update_time
+        id,
+        category_id,
+        title,
+        intro,
+        img,
+        img_list,
+        price,
+        original_price,
+        detail,
+        status,
+        stock,
+        sales,
+        create_time,
+        update_time
     </sql>
 
+
+    <select id="listProductByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List">
+        </include>
+        from pms_product
+        <where>
+            <!--
+              使用foreach遍历传入productIds
+              collection:指定输入对象中集合属性
+              item:每次遍历生成对象
+              open：开始遍历时拼接的串
+              close：结束遍历时拼接的串
+              separator分隔符:遍历的两个对象中需要拼接的串
+              实现 and id IN(1,10,16)拼接
+              and id IN(#{productId},#{productId},#{productId})
+           -->
+            <foreach
+                    collection="productIds"
+                    item="productId"
+                    open="and id IN("
+                    separator=","
+                    close=")">
+                #{productId}
+            </foreach>
+        </where>
+        <foreach
+                collection="productIds"
+                item="productId"
+                open="order by field(id,"
+                separator=","
+                close=")">
+            #{productId}
+        </foreach>
+    </select>
 </mapper>

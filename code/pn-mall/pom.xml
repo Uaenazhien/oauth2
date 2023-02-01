@@ -13,6 +13,8 @@
         <module>pn-generator</module>
         <module>pn-mall-gateway-admin</module>
         <module>pn-mall-cms</module>
+        <module>pn-mall-pms-api</module>
+        <module>pn-mall-gateway-app</module>
     </modules>
     <packaging>pom</packaging>
 

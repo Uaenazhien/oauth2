@@ -1,4 +1,4 @@
-package com.bjpowernode.controller.admin;
+package com.bjpowernode.controller;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.bjpowernode.dto.Result;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/pms/admin/categorys")
-public class CategoryAdminController {
+public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;

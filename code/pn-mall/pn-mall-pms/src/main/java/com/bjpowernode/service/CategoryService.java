@@ -47,4 +47,10 @@ public interface CategoryService extends IService<Category> {
         * @return
         */
     boolean removeCategoryById(Long categoryId);
+    /**
+     * 根据分类层级获取分类
+     * @param level
+     * @return
+     */
+    List<Category> listCategoryByLevel(Integer level);
 }

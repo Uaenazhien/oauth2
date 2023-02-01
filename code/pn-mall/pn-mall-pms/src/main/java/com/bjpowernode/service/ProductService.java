@@ -5,6 +5,8 @@ import com.bjpowernode.dto.ProductQueryParam;
 import com.bjpowernode.entity.Product;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 商品 服务类
@@ -58,4 +60,11 @@ public interface ProductService extends IService<Product> {
      * @return
      */
     Product updateProductStatus(Long productId, Integer status);
+
+    /**
+     * 根据商品id集合获取商品数据，并按productIds集合的顺序排序
+     * @param productIds
+     * @return
+     */
+    List<Product> listProductByIds(List<Long> productIds);
 }

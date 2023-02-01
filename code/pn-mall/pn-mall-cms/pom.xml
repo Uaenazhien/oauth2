@@ -52,6 +52,12 @@
         </dependency>
 
 
+        <dependency>
+            <groupId>com.bjpowernode</groupId>
+            <artifactId>pn-mall-pms-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 </project>
