@@ -3,6 +3,7 @@ package com.bjpowernode.service.impl;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bjpowernode.constant.RedisConstant;
 import com.bjpowernode.dto.PageParam;
 import com.bjpowernode.dto.PageResult;
 import com.bjpowernode.entity.IndexCarousel;
@@ -15,6 +16,9 @@ import com.google.common.collect.Lists;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +33,7 @@ import java.util.List;
  * @since 2023-01-30
  */
 @Service
+@CacheConfig(cacheNames = RedisConstant.KEY_INDEX_CAROUSEL)
 public class IndexCarouselServiceImpl extends ServiceImpl<IndexCarouselMapper, IndexCarousel> implements IndexCarouselService {
     @Autowired
     private MinioUtil minioUtil;
@@ -43,16 +48,20 @@ public class IndexCarouselServiceImpl extends ServiceImpl<IndexCarouselMapper, I
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean saveIndexCarousel(IndexCarousel indexCarousel) {
         return super.save(indexCarousel);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
     public boolean updateIndexCarousel(IndexCarousel indexCarousel) {
         return super.updateById(indexCarousel);
     }
 
     @Override
+    @CacheEvict(allEntries = true)
+    //清除所有轮播图的缓存
     public boolean removeIndexCarousel(Long indexCarouselId) {
         //获取图片路径
         IndexCarousel indexCarousel = super.getById(indexCarouselId);
@@ -68,6 +77,7 @@ public class IndexCarouselServiceImpl extends ServiceImpl<IndexCarouselMapper, I
     }
 
     @Override
+    @Cacheable //index:carousel:num--->List<IndexCarouselVo>(json)
     public List<IndexCarouselVO> getCarouselsForIndex(Integer num) {
         //1.构造条件和结果集对象
         Page<IndexCarousel> page = new Page<>(1,num);

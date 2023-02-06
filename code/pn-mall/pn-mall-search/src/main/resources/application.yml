@@ -1,0 +1,29 @@
+server:
+  port: 8003
+spring:
+  application:
+    name: pn-mall-search # 微服务的名称
+  cloud:
+    nacos:
+      discovery: # 服务注册和发现
+        server-addr: 192.168.100.31:8848 # nacos server 地址
+
+  elasticsearch:
+    uris:
+      - http://192.168.100.21:9200 # 搜索引擎服务地址
+  jackson:
+    # json 序列化排除值为 null 的属性
+    default-property-inclusion: non_null
+    # 格式化日期
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 配置时区
+    time-zone: GMT+8
+# 日志配置
+logging:
+  pattern:
+    console: '%d{HH:mm:ss} [%thread] %-5level %logger{50} - %msg%n'
+  level:
+    # 指定整个项目的日志级别为warn
+    root: info
+    # 对某个包指定单独的日志级别
+    com.bjpowernode.mapper: debug

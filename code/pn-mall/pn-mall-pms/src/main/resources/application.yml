@@ -15,13 +15,25 @@ spring:
       config:
         server-addr: 192.168.100.31:8848 #配置中心
 
-  jackson:
-    # json 序列化排除值为 null 的属性
-    default-property-inclusion: non_null
-    # 格式化日期
-    date-format: yyyy-MM-dd HH:mm:ss
-    # 配置时区
-    time-zone: GMT+8
+
+  redis:
+    host: 192.168.100.41
+    port: 6379
+    password: 123456
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 8 # 最大连接数
+        max-idle: 8 # 最多空闲连接
+        min-idle: 0 # 最小空闲连接
+        max-wait: 100 # 连接等待时间 默认值 -1
+
+  rabbitmq:
+    host: 192.168.100.31
+    port: 5672
+    virtual-host: /
+    username: rabbitmq
+    password: 123456
 
 # 日志配置
 logging:

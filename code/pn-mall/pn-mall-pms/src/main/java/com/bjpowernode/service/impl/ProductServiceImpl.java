@@ -4,6 +4,9 @@ import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bjpowernode.config.RabbitMQConfig;
+import com.bjpowernode.constant.RabbitMQConstant;
+import com.bjpowernode.constant.RedisConstant;
 import com.bjpowernode.dto.PageResult;
 import com.bjpowernode.dto.ProductQueryParam;
 import com.bjpowernode.entity.Category;
@@ -17,7 +20,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bjpowernode.util.MinioUtil;
 import com.google.common.collect.Lists;
 import org.apache.http.conn.routing.HttpRoute;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +40,8 @@ import java.util.List;
  * @since 2023-01-12
  */
 @Service
+// 缓存配置
+@CacheConfig(cacheNames = RedisConstant.KEY_PRODUCT)
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
 
     @Autowired
@@ -43,11 +53,23 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     private ProductMapper productMapper;
 
-    @Override
-    public Product getProductById(Long productId) {
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
-        return super.getById(productId);
+    @Override
+    // 查询缓存
+    @Cacheable(sync = true)  //produce:1
+    public  Product getProductById(Long productId) {
+        Product product = super.getById(productId);
+  /*      try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        System.out.println("访问了数据库");
+        return product;
     }
+
 
     @Override
     public PageResult<Product> pageQuery(ProductQueryParam queryParam) {
@@ -69,6 +91,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
+    // 更新缓存
+    @CachePut(key = "#product.id")
     public Product saveProduct(Product product) {
         //1.判断商品分类id不能为空
        /* LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
@@ -89,16 +113,26 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
+    // 更新缓存
+    @CachePut(key = "#product.id")
     public Product updateProduct(Product product) {
         boolean result = super.updateById(product);
         if (!result) {
             throw new BizException(HttpStatus.BAD_REQUEST.value(), "商品ID不存在");
         }
         // TODO 后续缓存用到该结果
-        return super.getById(product.getId());
+        product = super.getById(product.getId());
+        // // 上架状态的商品发生更新，同步信息到搜索引擎库
+        if (product.getStatus().equals(ProductStatus.ON.getStatus())){
+            rabbitTemplate.convertAndSend(
+                    RabbitMQConstant.EXCHANGE_PRODUCT,RabbitMQConstant.ROUTING_KEY_PRODUCT_SAVE,product);
+        }
+        return product;
     }
 
     @Override
+    // 删除缓存
+    @CacheEvict
     public boolean removeProductById(Long productId) {
         //1.检查商品状态 ：上架中的商品不能删除
         Product product = super.getById(productId);
@@ -128,6 +162,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
+    // 更新缓存
+    @CachePut(key = "#productId")
     public Product updateProductStatus(Long productId, Integer status) {
         Product product = super.getById(productId);
         if (product == null) {

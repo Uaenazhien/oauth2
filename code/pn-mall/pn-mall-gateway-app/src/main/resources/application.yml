@@ -21,6 +21,11 @@ spring:
           predicates:
             - Path=/cms/app/**
 
+        - id: pn-mall-search          # 搜索微服务
+          uri: lb://pn-mall-search    # 微服务的名称 实现负载均衡
+          predicates:
+            - Path=/search/app/**
+
 
 
 

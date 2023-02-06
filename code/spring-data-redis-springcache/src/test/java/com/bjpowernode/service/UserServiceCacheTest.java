@@ -32,5 +32,5 @@ class UserServiceCacheTest {
     @Test
     void removeById() {
         userServiceCache.removeById(1l);
-    }
+    } 
 }

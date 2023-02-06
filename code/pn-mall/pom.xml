@@ -15,6 +15,9 @@
         <module>pn-mall-cms</module>
         <module>pn-mall-pms-api</module>
         <module>pn-mall-gateway-app</module>
+        <module>pn-common-redis</module>
+        <module>pn-mall-search</module>
+        <module>pn-common-mq</module>
     </modules>
     <packaging>pom</packaging>
 

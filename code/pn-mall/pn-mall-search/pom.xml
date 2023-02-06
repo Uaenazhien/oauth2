@@ -9,13 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>pn-mall-pms</artifactId>
-
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
+    <artifactId>pn-mall-search</artifactId>
 
     <dependencies>
         <!-- 公共模块 -->
@@ -24,18 +18,12 @@
             <artifactId>pn-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.bjpowernode</groupId>
-            <artifactId>pn-common-redis</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 
+        <!-- elasticsearch 启动器 -->
         <dependency>
-            <groupId>com.bjpowernode</groupId>
-            <artifactId>pn-common-mq</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-
 
         <!-- nacos 服务注册和发现 -->
         <dependency>
@@ -48,23 +36,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
-        <!-- mysql驱动 -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-core</artifactId>
-            <version>3.5.1</version>
-        </dependency>
     </dependencies>
+
 </project>

@@ -5,6 +5,7 @@ import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.bjpowernode.constant.RedisConstant;
 import com.bjpowernode.entity.Category;
 import com.bjpowernode.entity.Product;
 import com.bjpowernode.exception.BizException;
@@ -15,6 +16,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bjpowernode.util.MinioUtil;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,8 @@ import java.util.Map;
  * @since 2023-01-12
  */
 @Service
+// 缓存配置
+@CacheConfig(cacheNames = RedisConstant.KEY_INDEX_CATEGORY)
 public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
 
     @Autowired
@@ -78,6 +84,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return
      */
     @Override
+    // 清空缓存
+    @CacheEvict(allEntries = true)
     public Category saveCategory(Category category) {
         super.save(category);
         return category;
@@ -90,6 +98,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      * @return
      */
     @Override
+    // 清空缓存
+    @CacheEvict(allEntries = true)
     public Category updateCategoryById(Category category) {
         //1.检查用户是否修改了父分类和层级，入如果是，不让修改
     /*    Category oldCategory = super.getById(category.getId());
@@ -116,6 +126,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
      */
 
     @Override
+    // 清空缓存
+    @CacheEvict(allEntries = true)
     public boolean removeCategoryById(Long categoryId) {
     /*    //1.检查商品分类是否有子分类，如果有，不允许删除
     select * from pms_category where parent_id = categoryId
@@ -149,6 +161,8 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         return result;
     }
     @Override
+    // 设置缓存
+    @Cacheable
     public List<Category> listCategoryByLevel(Integer level) {
         LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Category::getLevel,level);
